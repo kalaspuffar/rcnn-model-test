@@ -2,7 +2,10 @@ mydata
 mymodel
 data
 model
-waldo*
+waldo_data
+waldo_images
+waldo_model
+waldo.json
 *.png
 .classpath
 .project
