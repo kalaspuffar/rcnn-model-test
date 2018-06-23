@@ -2,9 +2,7 @@ mydata
 mymodel
 data
 model
-waldo_data
 waldo_images
-waldo_model
 waldo.json
 *.png
 .classpath
@@ -13,3 +11,8 @@ waldo.json
 .settings
 *.iml
 target
+waldo_data
+waldo_model/train
+waldo_model/export
+waldo_model/eval
+waldo_model/export.zip
