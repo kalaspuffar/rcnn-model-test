@@ -1,7 +1,5 @@
 Hello Explorers
-
 ---
-
 ```java
 package org.ea;
 
@@ -11,7 +9,5 @@ public class Hello {
     }
 }
 ```
-
 ---
-
 The End
