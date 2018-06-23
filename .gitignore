@@ -1,0 +1,9 @@
+data
+model
+mydata
+mymodel
+waldo_data
+waldo_model/train
+waldo_model/export
+waldo_model/eval
+waldo_model/export.zip
