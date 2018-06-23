@@ -50,11 +50,11 @@ public class RunInference {
         System.out.println( "Hello World! I'm using tensorflow version " + TensorFlow.version() );
 
         try {
-            SavedModelBundle smb = SavedModelBundle.load("./model/export/saved_model", "serve");
+            SavedModelBundle smb = SavedModelBundle.load("./waldo_model/export/saved_model", "serve");
             Session s = smb.session();
 
-//            BufferedImage orgImg = ImageIO.read(new File("waldo_images/waldo_6.jpg"));
-            BufferedImage orgImg = ImageIO.read(new File("waldo_images/test2.jpeg"));
+            BufferedImage orgImg = ImageIO.read(new File("waldo_images/waldo_21.jpg"));
+//            BufferedImage orgImg = ImageIO.read(new File("waldo_images/test2.jpeg"));
 //            BufferedImage orgImg = ImageIO.read(new File("/home/danielp/pdfwork/fel/cityam-17.png"));
 
             BufferedImage bi = new BufferedImage(orgImg.getWidth(), orgImg.getHeight(), BufferedImage.TYPE_INT_RGB);
@@ -102,7 +102,6 @@ public class RunInference {
             System.out.println("Number of detected: " + numDet);
 
             for(int i=0; i<3; i++) {
-                System.out.println("First detected");
                 System.out.println("-----------------------------------");
 
                 int ymin = Math.round(detection_boxes[0][i][0] * h);
