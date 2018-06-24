@@ -38,7 +38,7 @@
                         <manifest>
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                             <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-                            <mainClass>com.textalk.commandline.WebarchMain</mainClass>
+                            <mainClass>org.ea.waldo.RunInference</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

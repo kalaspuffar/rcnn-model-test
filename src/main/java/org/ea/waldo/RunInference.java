@@ -53,7 +53,7 @@ public class RunInference {
             SavedModelBundle smb = SavedModelBundle.load("./waldo_model/export/saved_model", "serve");
             Session s = smb.session();
 
-            BufferedImage orgImg = ImageIO.read(new File("waldo_images/waldo_21.jpg"));
+            BufferedImage orgImg = ImageIO.read(new File(args[0]));
 //            BufferedImage orgImg = ImageIO.read(new File("waldo_images/test2.jpeg"));
 //            BufferedImage orgImg = ImageIO.read(new File("/home/danielp/pdfwork/fel/cityam-17.png"));
 
@@ -89,11 +89,13 @@ public class RunInference {
                     .fetch("num_detections")
                     .run();
 
-            float[][][] boxes = new float[1][300][4];
+            int numMaxClasses = 10;
+
+            float[][][] boxes = new float[1][numMaxClasses][4];
             float[][][] detection_boxes = result.get(0).copyTo(boxes);
-            float[][] scores = new float[1][300];
+            float[][] scores = new float[1][numMaxClasses];
             float[][] detection_scores = result.get(1).copyTo(scores);
-            float[][] classes = new float[1][300];
+            float[][] classes = new float[1][numMaxClasses];
             float[][] detection_classes = result.get(2).copyTo(classes);
             float[] n = new float[1];
             float[] numDetections = result.get(3).copyTo(n);
