@@ -137,11 +137,12 @@ public class CreateWaldoDataFromXML extends CreateWaldoCommon {
             for(File f : dir.listFiles()) {
                 if(!f.isFile() || !f.getName().endsWith(".xml")) continue;
                 Document doc = db.parse(f);
-                if(i > 20) {
+                if(i > 30) {
                     runFile(doc, tfWriterEval);
                 } else {
                     runFile(doc, tfWriterTrain);
                 }
+                i++;
             }
 
             dosTrain.close();
