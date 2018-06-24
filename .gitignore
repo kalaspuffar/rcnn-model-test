@@ -1,3 +1,4 @@
+PITCHME
 mydata
 mymodel
 data
@@ -7,6 +8,7 @@ waldo.json
 *.png
 .classpath
 .project
+.vscode
 .idea
 .settings
 *.iml

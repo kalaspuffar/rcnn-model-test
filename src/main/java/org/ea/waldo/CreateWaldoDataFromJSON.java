@@ -1,76 +1,17 @@
 package org.ea.waldo;
 
-import com.google.protobuf.ByteString;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.tensorflow.example.*;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
-public class CreateWaldoData {
-
-
-    private static Feature getIntFeature(int val) {
-        Int64List int64List = Int64List.newBuilder().addValue(val).build();
-        Feature intFeature = Feature.newBuilder().setInt64List(int64List).build();
-        return intFeature;
-    }
-
-    private static Feature getStringFeature(String val) {
-        ByteString byteString = ByteString.copyFromUtf8(val);
-        BytesList bytesList = BytesList.newBuilder().addValue(byteString).build();
-        Feature text = Feature.newBuilder().setBytesList(bytesList).build();
-        return text;
-    }
-
-
-    private static Feature getIntListFeature(List<Long> val) {
-        Int64List int64List = Int64List.newBuilder().addAllValue(val).build();
-        Feature intFeature = Feature.newBuilder().setInt64List(int64List).build();
-        return intFeature;
-    }
-
-
-    private static Feature getFloatFeature(List<Float> val) {
-        FloatList floatList = FloatList.newBuilder().addAllValue(val).build();
-        Feature floatFeature = Feature.newBuilder().setFloatList(floatList).build();
-        return floatFeature;
-    }
-
-    private static Feature getStringListFeature(List<String> val) {
-        BytesList.Builder bBuilder = BytesList.newBuilder();
-        for(String s : val) {
-            ByteString byteString = ByteString.copyFromUtf8(s);
-            bBuilder.addValue(byteString);
-        }
-        Feature text = Feature.newBuilder().setBytesList(bBuilder.build()).build();
-        return text;
-    }
-
-
-    private static Feature getImageFeature(BufferedImage orgImg) throws Exception {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        BufferedImage bi = new BufferedImage(orgImg.getWidth(), orgImg.getHeight(), BufferedImage.TYPE_INT_RGB);
-        Graphics2D g = (Graphics2D)bi.getGraphics();
-        g.drawImage(orgImg, 0, 0, null);
-
-        ImageIO.write(bi, "jpeg", baos);
-        baos.flush();
-        ByteString byteString = ByteString.copyFrom(baos.toByteArray());
-        baos.close();
-        BytesList bytesList = BytesList.newBuilder().addValue(byteString).build();
-        Feature text = Feature.newBuilder().setBytesList(bytesList).build();
-
-        return text;
-    }
+public class CreateWaldoDataFromJSON extends CreateWaldoCommon {
 
     public static void runFile(JSONObject jsonObject, TFRecordWriter tfWriter) throws Exception {
 
@@ -89,6 +30,10 @@ public class CreateWaldoData {
         List<Float> ymin = new ArrayList<>();
         List<Float> ymax = new ArrayList<>();
 
+        List<Long> difficult = new ArrayList<>();
+        List<Long> truncated = new ArrayList<>();
+        List<String> view = new ArrayList<>();
+
         Long xminL = (Long)jsonObject.get("xmin");
         Long xmaxL = (Long)jsonObject.get("xmax");
         Long yminL = (Long)jsonObject.get("ymin");
@@ -96,6 +41,10 @@ public class CreateWaldoData {
 
         label.add(1l);
         label_txt.add("waldo");
+
+        difficult.add(0l);
+        truncated.add(1l);
+        view.add("frontal");
 
         xmin.add((float)xminL / (float)width);
         xmax.add((float)xmaxL / (float)width);
@@ -107,6 +56,7 @@ public class CreateWaldoData {
                 .putFeature("image/height", getIntFeature(height))
                 .putFeature("image/filename", getStringFeature(filename))
                 .putFeature("image/source_id", getStringFeature(filename))
+                .putFeature("image/key/sha256", getImageHash(bi))
                 .putFeature("image/encoded", getImageFeature(bi))
                 .putFeature("image/format", getStringFeature("jpeg"))
                 .putFeature("image/object/bbox/xmin", getFloatFeature(xmin))
@@ -115,6 +65,9 @@ public class CreateWaldoData {
                 .putFeature("image/object/bbox/ymax", getFloatFeature(ymax))
                 .putFeature("image/object/class/text", getStringListFeature(label_txt))
                 .putFeature("image/object/class/label", getIntListFeature(label))
+                .putFeature("image/object/difficult", getIntListFeature(difficult))
+                .putFeature("image/object/truncated", getIntListFeature(truncated))
+                .putFeature("image/object/view", getStringListFeature(view))
                 .build();
         Example example = Example.newBuilder().setFeatures(features).build();
 
