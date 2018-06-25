@@ -5,12 +5,11 @@ patterns to use in order to run it smoothly.
 
 ### Creating data for training
 
-This could be done by annotating the data using labelImg for annotating the images in either YOLO or PascalVOC format.
-Then you can use the java classes provided here to create TFRecords from either XML or JSON format.
+This could be done by annotating the data using [labelImg](https://github.com/tzutalin/labelImg) for annotating the images in either YOLO or PascalVOC format. Then you can use the java classes provided here to create TFRecords from either XML or JSON format.
 
 ### Training model
 
-After you've followed the install guide at the Tensorflow Object Detection page you can start your training.
+After you've followed the install guide at the [Tensorflow Object Detection](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/installation.md) page you can start your training.
 
 Running the command below supplying new directories for the training configuration and training output dir will train your model.
 ```
@@ -24,8 +23,7 @@ python object_detection/train.py \
 
 After the model is trained you may validate it by using the set of examples you've saved for evaluating.
 
-Running the command below specifying configuration file, training output directory and the evaluation output directory where
-the script will put the result of the evaluation.
+Running the command below specifying configuration file, training output directory and the evaluation output directory where the script will put the result of the evaluation.
 ```
 python object_detection/eval.py \
     --logtostderr \
