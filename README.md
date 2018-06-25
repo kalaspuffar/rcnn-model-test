@@ -28,6 +28,12 @@ python object_detection/train.py \
     --pipeline_config_path=/home/woden/github/rcnn-model-test/model/mymodel.config \
     --train_dir=/home/woden/github/rcnn-model-test/model/train
 
+
+python object_detection/train.py \
+    --logtostderr \
+    --pipeline_config_path=/home/woden/github/rcnn-model-test/mymodel/mymodel.config \
+    --train_dir=/home/woden/github/rcnn-model-test/mymodel/train
+
 Evaluate
 ```
 python object_detection/eval.py \

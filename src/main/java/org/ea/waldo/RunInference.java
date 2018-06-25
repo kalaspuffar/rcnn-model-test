@@ -54,8 +54,6 @@ public class RunInference {
             Session s = smb.session();
 
             BufferedImage orgImg = ImageIO.read(new File(args[0]));
-//            BufferedImage orgImg = ImageIO.read(new File("waldo_images/test2.jpeg"));
-//            BufferedImage orgImg = ImageIO.read(new File("/home/danielp/pdfwork/fel/cityam-17.png"));
 
             BufferedImage bi = new BufferedImage(orgImg.getWidth(), orgImg.getHeight(), BufferedImage.TYPE_INT_RGB);
             Graphics2D g = (Graphics2D)bi.getGraphics();
@@ -79,7 +77,7 @@ public class RunInference {
             }
             byteBuffer.rewind();
 
-            Tensor inputTensor = Tensor.create(UInt8.class, new long[] {1, bi.getWidth(), bi.getHeight(), 3}, byteBuffer);
+            Tensor inputTensor = Tensor.create(UInt8.class, new long[] {1, bi.getHeight(), bi.getWidth(), 3}, byteBuffer);
 
             List<Tensor<?>> result = s.runner()
                     .feed("image_tensor", inputTensor)
@@ -89,7 +87,7 @@ public class RunInference {
                     .fetch("num_detections")
                     .run();
 
-            int numMaxClasses = 10;
+            int numMaxClasses = 300;
 
             float[][][] boxes = new float[1][numMaxClasses][4];
             float[][][] detection_boxes = result.get(0).copyTo(boxes);
@@ -120,7 +118,7 @@ public class RunInference {
                 g.drawString(labels[Math.round(detection_classes[0][i])], xmin, ymin);
             }
 
-            ImageIO.write(bi, "PNG", new File("test.png"));
+            ImageIO.write(bi, "PNG", new File(args[1]));
 /*
             for(int i=0; i<numDet; i++) {
                 System.out.println("Score "+detection_scores[0][i]);
